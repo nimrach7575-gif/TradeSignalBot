@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Trade Signal Bot - Manual market signal analysis dashboard"
+    >
+
+    <meta
+        name="theme-color"
+        content="#07111f"
+    >
+
+    <title>Trade Signal Bot</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+
+    <!-- =====================================================
+         APP BACKGROUND
+    ====================================================== -->
+
+    <div class="app-background">
+
+        <div class="background-glow glow-one"></div>
+        <div class="background-glow glow-two"></div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN APP
+    ====================================================== -->
+
+    <div class="app-shell">
+
+
+        <!-- =================================================
+             TOP NAVIGATION
+        ================================================== -->
+
+        <header class="topbar">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="brand-text">
+                    <h1>Trade Signal Bot</h1>
+                    <p>Market Analysis Dashboard</p>
+                </div>
+
+            </div>
+
+
+            <div class="system-status">
+
+                <div
+                    class="status-dot"
+                    id="statusDot"
+                ></div>
+
+                <span id="statusText">
+                    Checking system...
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             MAIN CONTENT
+        ================================================== -->
+
+        <main class="main-content">
+
+
+            <!-- =================================================
+                 HERO SECTION
+            ================================================== -->
+
+            <section class="hero-section">
+
+                <div class="hero-content">
+
+                    <div class="hero-badge">
+                        <span class="badge-dot"></span>
+                        MANUAL SIGNAL MODE
+                    </div>
+
+                    <h2>
+                        Analyze the Market.
+                        <span>Trade With Confirmation.</span>
+                    </h2>
+
+                    <p>
+                        Select your currency pair, timeframe and
+                        expiry to generate a market signal based
+                        on the configured technical analysis engine.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 DASHBOARD GRID
+            ================================================== -->
+
+            <section class="dashboard-grid">
+
+
+                <!-- =================================================
+                     LEFT: SIGNAL REQUEST PANEL
+                ================================================== -->
+
+                <div class="panel request-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <span class="panel-eyebrow">
+                                SIGNAL REQUEST
+                            </span>
+
+                            <h3>
+                                Configure Your Signal
+                            </h3>
+
+                        </div>
+
+                        <div class="panel-number">
+                            01
+                        </div>
+
+                    </div>
+
+
+                    <!-- =============================================
+                         CURRENCY PAIR
+                    ============================================== -->
+
+                    <div class="form-group">
+
+                        <label for="pairSelect">
+                            Currency Pair
+                        </label>
+
+                        <div class="select-wrapper">
+
+                            <select
+                                id="pairSelect"
+                                name="symbol"
+                            >
+
+                                <option value="">
+                                    Loading pairs...
+                                </option>
+
+                            </select>
+
+                            <span class="select-arrow">
+                                ▾
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =============================================
+                         TIMEFRAME
+                    ============================================== -->
+
+                    <div class="form-group">
+
+                        <label for="timeframeSelect">
+                            Timeframe
+                        </label>
+
+                        <div class="select-wrapper">
+
+                            <select
+                                id="timeframeSelect"
+                                name="timeframe"
+                            >
+
+                                <option value="">
+                                    Loading timeframes...
+                                </option>
+
+                            </select>
+
+                            <span class="select-arrow">
+                                ▾
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =============================================
+                         EXPIRY
+                    ============================================== -->
+
+                    <div class="form-group">
+
+                        <label for="expirySelect">
+                            Signal Expiry
+                        </label>
+
+                        <div class="select-wrapper">
+
+                            <select
+                                id="expirySelect"
+                                name="expiry"
+                            >
+
+                                <option value="">
+                                    Loading expiry options...
+                                </option>
+
+                            </select>
+
+                            <span class="select-arrow">
+                                ▾
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =============================================
+                         MINIMUM SCORE
+                    ============================================== -->
+
+                    <div class="minimum-score-box">
+
+                        <div class="info-icon">
+                            i
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Confirmation Threshold
+                            </strong>
+
+                            <p>
+                                Signals below the minimum
+                                confirmation score will return
+                                WAIT.
+                            </p>
+
+                        </div>
+
+                        <div
+                            class="threshold-value"
+                            id="thresholdValue"
+                        >
+                            --
+                        </div>
+
+                    </div>
+
+
+                    <!-- =============================================
+                         REQUEST BUTTON
+                    ============================================== -->
+
+                    <button
+                        type="button"
+                        id="requestSignalBtn"
+                        class="primary-button"
+                        disabled
+                    >
+
+                        <span
+                            class="button-icon"
+                            id="requestButtonIcon"
+                        >
+                            ↗
+                        </span>
+
+                        <span id="requestButtonText">
+                            Loading...
+                        </span>
+
+                    </button>
+
+
+                    <!-- =============================================
+                         ERROR MESSAGE
+                    ============================================== -->
+
+                    <div
+                        class="message-box error-message"
+                        id="errorMessage"
+                        hidden
+                    >
+
+                        <div class="message-icon">
+                            !
+                        </div>
+
+                        <div>
+                            <strong>
+                                Something went wrong
+                            </strong>
+
+                            <p id="errorMessageText">
+                                Please try again.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     RIGHT: SIGNAL RESULT PANEL
+                ================================================== -->
+
+                <div class="panel signal-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <span class="panel-eyebrow">
+                                LIVE ANALYSIS
+                            </span>
+
+                            <h3>
+                                Current Signal
+                            </h3>
+
+                        </div>
+
+                        <div class="panel-number">
+                            02
+                        </div>
+
+                    </div>
+
+
+                    <!-- =============================================
+                         EMPTY STATE
+                    ============================================== -->
+
+                    <div
+                        class="signal-empty"
+                        id="signalEmpty"
+                    >
+
+                        <div class="empty-icon">
+
+                            <div class="empty-chart-line"></div>
+
+                        </div>
+
+                        <h4>
+                            No Active Signal
+                        </h4>
+
+                        <p>
+                            Configure your preferences and
+                            request a signal to begin analysis.
+                        </p>
+
+                    </div>
+
+
+                    <!-- =============================================
+                         ACTIVE SIGNAL
+                    ============================================== -->
+
+                    <div
+                        class="signal-result"
+                        id="signalResult"
+                        hidden
+                    >
+
+
+                        <!-- =========================================
+                             SIGNAL DIRECTION
+                        ========================================== -->
+
+                        <div
+                            class="direction-card"
+                            id="directionCard"
+                        >
+
+                            <div class="direction-top">
+
+                                <span
+                                    class="direction-label"
+                                    id="directionLabel"
+                                >
+                                    SIGNAL
+                                </span>
+
+                                <span
+                                    class="signal-id"
+                                    id="signalId"
+                                >
+                                    #----
+                                </span>
+
+                            </div>
+
+
+                            <div class="direction-main">
+
+                                <div
+                                    class="direction-arrow"
+                                    id="directionArrow"
+                                >
+                                    ↑
+                                </div>
+
+                                <div>
+
+                                    <div
+                                        class="direction-value"
+                                        id="directionValue"
+                                    >
+                                        UP
+                                    </div>
+
+                                    <div
+                                        class="direction-description"
+                                        id="directionDescription"
+                                    >
+                                        Bullish confirmation
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =========================================
+                             SIGNAL METRICS
+                        ========================================== -->
+
+                        <div class="signal-metrics">
+
+
+                            <div class="metric-card">
+
+                                <span class="metric-label">
+                                    CONFIDENCE
+                                </span>
+
+                                <strong
+                                    class="metric-value"
+                                    id="scoreValue"
+                                >
+                                    --
+                                </strong>
+
+                                <span class="metric-unit">
+                                    / 100
+                                </span>
+
+                            </div>
+
+
+                            <div class="metric-card">
+
+                                <span class="metric-label">
+                                    ENTRY PRICE
+                                </span>
+
+                                <strong
+                                    class="metric-value metric-price"
+                                    id="entryPriceValue"
+                                >
+                                    --
+                                </strong>
+
+                            </div>
+
+
+                            <div class="metric-card">
+
+                                <span class="metric-label">
+                                    TIMEFRAME
+                                </span>
+
+                                <strong
+                                    class="metric-value metric-small"
+                                    id="timeframeValue"
+                                >
+                                    --
+                                </strong>
+
+                            </div>
+
+
+                            <div class="metric-card">
+
+                                <span class="metric-label">
+                                    EXPIRY
+                                </span>
+
+                                <strong
+                                    class="metric-value metric-small"
+                                    id="expiryValue"
+                                >
+                                    --
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- =========================================
+                             INDICATOR DATA
+                        ========================================== -->
+
+                        <div class="indicator-section">
+
+                            <div class="section-title-row">
+
+                                <div>
+
+                                    <span class="section-eyebrow">
+                                        TECHNICAL DATA
+                                    </span>
+
+                                    <h4>
+                                        Market Indicators
+                                    </h4>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="indicator-grid">
+
+
+                                <div class="indicator-item">
+
+                                    <span>
+                                        EMA 9
+                                    </span>
+
+                                    <strong id="ema9Value">
+                                        --
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="indicator-item">
+
+                                    <span>
+                                        EMA 21
+                                    </span>
+
+                                    <strong id="ema21Value">
+                                        --
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="indicator-item">
+
+                                    <span>
+                                        EMA 50
+                                    </span>
+
+                                    <strong id="ema50Value">
+                                        --
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="indicator-item">
+
+                                    <span>
+                                        RSI 14
+                                    </span>
+
+                                    <strong id="rsiValue">
+                                        --
+                                    </strong>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =========================================
+                             ANALYSIS REASONS
+                        ========================================== -->
+
+                        <div class="analysis-section">
+
+                            <div class="section-title-row">
+
+                                <div>
+
+                                    <span class="section-eyebrow">
+                                        ANALYSIS
+                                    </span>
+
+                                    <h4>
+                                        Confirmation Factors
+                                    </h4>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                class="reasons-list"
+                                id="reasonsList"
+                            >
+
+                                <div class="reason-item">
+                                    <span class="reason-bullet"></span>
+                                    <span>
+                                        Waiting for analysis...
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =========================================
+                             LOCK STATUS
+                        ========================================== -->
+
+                        <div
+                            class="lock-panel"
+                            id="lockPanel"
+                        >
+
+                            <div class="lock-icon">
+                                🔒
+                            </div>
+
+                            <div class="lock-content">
+
+                                <strong id="lockTitle">
+                                    Signal Locked
+                                </strong>
+
+                                <p id="lockDescription">
+                                    This signal remains locked
+                                    until its expiry period is
+                                    complete.
+                                </p>
+
+                            </div>
+
+                            <div
+                                class="lock-status-badge"
+                                id="lockStatusBadge"
+                            >
+                                ACTIVE
+                            </div>
+
+                        </div>
+
+
+                        <!-- =========================================
+                             RESULT PANEL
+                        ========================================== -->
+
+                        <div
+                            class="final-result-panel"
+                            id="finalResultPanel"
+                            hidden
+                        >
+
+                            <div class="result-header">
+
+                                <div>
+
+                                    <span class="section-eyebrow">
+                                        TRADE RESULT
+                                    </span>
+
+                                    <h4>
+                                        Signal Completed
+                                    </h4>
+
+                                </div>
+
+                                <div
+                                    class="result-badge"
+                                    id="resultBadge"
+                                >
+                                    --
+                                </div>
+
+                            </div>
+
+
+                            <div class="result-prices">
+
+                                <div class="result-price">
+
+                                    <span>
+                                        Entry
+                                    </span>
+
+                                    <strong id="resultEntryPrice">
+                                        --
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="result-arrow">
+                                    →
+                                </div>
+
+
+                                <div class="result-price">
+
+                                    <span>
+                                        Exit
+                                    </span>
+
+                                    <strong id="resultExitPrice">
+                                        --
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 MARKET SNAPSHOT
+            ================================================== -->
+
+            <section class="panel market-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="panel-eyebrow">
+                            MARKET SNAPSHOT
+                        </span>
+
+                        <h3>
+                            Selected Market
+                        </h3>
+
+                    </div>
+
+                    <div class="live-indicator">
+
+                        <span></span>
+
+                        <span>
+                            ANALYSIS READY
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="market-grid">
+
+
+                    <div class="market-item">
+
+                        <span class="market-label">
+                            CURRENCY PAIR
+                        </span>
+
+                        <strong
+                            id="marketPair"
+                        >
+                            --
+                        </strong>
+
+                    </div>
+
+
+                    <div class="market-item">
+
+                        <span class="market-label">
+                            TIMEFRAME
+                        </span>
+
+                        <strong
+                            id="marketTimeframe"
+                        >
+                            --
+                        </strong>
+
+                    </div>
+
+
+                    <div class="market-item">
+
+                        <span class="market-label">
+                            EXPIRY
+                        </span>
+
+                        <strong
+                            id="marketExpiry"
+                        >
+                            --
+                        </strong>
+
+                    </div>
+
+
+                    <div class="market-item">
+
+                        <span class="market-label">
+                            MODE
+                        </span>
+
+                        <strong>
+                            MANUAL
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 HOW IT WORKS
+            ================================================== -->
+
+            <section class="how-section">
+
+                <div class="section-heading">
+
+                    <span class="panel-eyebrow">
+                        WORKFLOW
+                    </span>
+
+                    <h3>
+                        How It Works
+                    </h3>
+
+                    <p>
+                        A simple manual workflow designed to
+                        prevent overlapping signals.
+                    </p>
+
+                </div>
+
+
+                <div class="workflow-grid">
+
+
+                    <div class="workflow-card">
+
+                        <div class="workflow-number">
+                            01
+                        </div>
+
+                        <div class="workflow-icon">
+                            ⚙
+                        </div>
+
+                        <h4>
+                            Configure
+                        </h4>
+
+                        <p>
+                            Choose the currency pair,
+                            timeframe and signal expiry.
+                        </p>
+
+                    </div>
+
+
+                    <div class="workflow-connector">
+                        →
+                    </div>
+
+
+                    <div class="workflow-card">
+
+                        <div class="workflow-number">
+                            02
+                        </div>
+
+                        <div class="workflow-icon">
+                            ◈
+                        </div>
+
+                        <h4>
+                            Analyze
+                        </h4>
+
+                        <p>
+                            The system analyzes completed
+                            market candles and indicators.
+                        </p>
+
+                    </div>
+
+
+                    <div class="workflow-connector">
+                        →
+                    </div>
+
+
+                    <div class="workflow-card">
+
+                        <div class="workflow-number">
+                            03
+                        </div>
+
+                        <div class="workflow-icon">
+                            ↑
+                        </div>
+
+                        <h4>
+                            Signal
+                        </h4>
+
+                        <p>
+                            A confirmed UP or DOWN signal
+                            is displayed when available.
+                        </p>
+
+                    </div>
+
+
+                    <div class="workflow-connector">
+                        →
+                    </div>
+
+
+                    <div class="workflow-card">
+
+                        <div class="workflow-number">
+                            04
+                        </div>
+
+                        <div class="workflow-icon">
+                            ✓
+                        </div>
+
+                        <h4>
+                            Result
+                        </h4>
+
+                        <p>
+                            After expiry, the system checks
+                            the result and unlocks the next request.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SAFETY / MODE NOTICE
+            ================================================== -->
+
+            <section class="notice-panel">
+
+                <div class="notice-icon">
+                    !
+                </div>
+
+                <div class="notice-content">
+
+                    <strong>
+                        Manual Trading Mode
+                    </strong>
+
+                    <p>
+                        This application generates market-analysis
+                        signals only. It does not connect to Quotex,
+                        place trades, or execute transactions
+                        automatically.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+        </main>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer class="footer">
+
+            <div class="footer-brand">
+                Trade Signal Bot
+            </div>
+
+            <div class="footer-center">
+                Manual Signal Analysis
+            </div>
+
+            <div class="footer-status">
+
+                <span
+                    class="footer-dot"
+                    id="footerStatusDot"
+                ></span>
+
+                <span id="footerStatusText">
+                    System Online
+                </span>
+
+            </div>
+
+        </footer>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         LOADING OVERLAY
+    ====================================================== -->
+
+    <div
+        class="loading-overlay"
+        id="loadingOverlay"
+        hidden
+    >
+
+        <div class="loading-card">
+
+            <div class="loading-spinner"></div>
+
+            <h3>
+                Analyzing Market
+            </h3>
+
+            <p id="loadingText">
+                Downloading market data and calculating indicators...
+            </p>
+
+            <div class="loading-progress">
+
+                <div
+                    class="loading-progress-bar"
+                    id="loadingProgressBar"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TOAST NOTIFICATION
+    ====================================================== -->
+
+    <div
+        class="toast"
+        id="toast"
+        hidden
+    >
+
+        <div
+            class="toast-icon"
+            id="toastIcon"
+        >
+            ✓
+        </div>
+
+        <div class="toast-content">
+
+            <strong id="toastTitle">
+                Notification
+            </strong>
+
+            <p id="toastMessage">
+                --
+            </p>
+
+        </div>
+
+        <button
+            type="button"
+            class="toast-close"
+            id="toastClose"
+            aria-label="Close notification"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        src="{{ url_for('static', filename='script.js') }}"
+    ></script>
+
+</body>
+</html>
